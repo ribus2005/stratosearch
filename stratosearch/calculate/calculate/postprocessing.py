@@ -1,26 +1,17 @@
 import numpy as np
+import torch
 
 
-def multiclass_postprocess(output):
+def default_postprocess(output: torch.Tensor) -> np.ndarray:
     """
     output: (C, H, W) или (1, C, H, W)
     """
     if output.ndim == 4:
-        output = output[0]
-    class_map = np.argmax(output, axis=0)  # (H,W)
-    return class_map.astype(np.uint8)
-
-
-def default_postprocess(output):
-    """
-    output: (C, H, W) или (1, C, H, W)
-    """
-    if output.ndim == 4:
-        output = output[0]
-    class_map = np.argmax(output, axis=0)  # (H,W)
+        output = output.squeeze()
+    output_arr = output.numpy()
+    class_map = np.argmax(output_arr, axis=0)  # (H,W)
     return class_map.astype(np.uint8)
 
 
 POSTPROCESSORS = {
-    "unet": multiclass_postprocess,
 }

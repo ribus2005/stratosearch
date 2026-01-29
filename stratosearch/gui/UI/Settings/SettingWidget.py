@@ -23,7 +23,7 @@ class SettingWidget(QWidget):
         self.weights_dir = self.get_app_dir() / "weights"
         self.ensure_weights_dir()
 
-        self.models_info = {}  # display_name → (model_path, model_name)
+        self.models_info = {}  # display_name → (weight_path, model_name)
         self.load_available_models()
 
         # Ресайз окна
@@ -66,12 +66,12 @@ class SettingWidget(QWidget):
                 f"Не удалось создать папку весов:\n{self.weights_dir}\n\n{e}"
             )
 
-    # ---------------- ЧТЕНИЕ МОДЕЛЕЙ ----------------
+    # ---------------- ЧТЕНИЕ ВЕСОВ МОДЕЛЕЙ ----------------
     def load_available_models(self):
         self.ui.comboModels.clear()
         self.models_info.clear()
 
-        model_files = list(self.weights_dir.glob("*.onnx"))
+        model_files = list(self.weights_dir.glob("*.pth"))
 
         if not model_files:
             self.ui.comboModels.addItem("Нет доступных моделей")
@@ -162,10 +162,10 @@ class SettingWidget(QWidget):
             QMessageBox.warning(self, "Ошибка", "Модель не выбрана")
             return
 
-        model_path, model_name = self.models_info[display_name]
+        weight_path, model_name = self.models_info[display_name]
 
         self.thread = QThread()
-        self.worker = InferenceWorker(self.input_array, model_path, model_name)
+        self.worker = InferenceWorker(self.input_array, weight_path, model_name)
         self.worker.moveToThread(self.thread)
 
         self.thread.started.connect(self.worker.run)

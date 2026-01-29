@@ -32,47 +32,16 @@ class Ui_Form(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.inputDatLayout = QHBoxLayout()
-        self.inputDatLayout.setSpacing(0)
-        self.inputDatLayout.setObjectName(u"inputDatLayout")
-        self.editInput = QLineEdit(Form)
-        self.editInput.setObjectName(u"editInput")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.editInput.sizePolicy().hasHeightForWidth())
-        self.editInput.setSizePolicy(sizePolicy)
-        self.editInput.setMaximumSize(QSize(16777215, 16777215))
-        self.editInput.setReadOnly(True)
-
-        self.inputDatLayout.addWidget(self.editInput)
-
-        self.btnUpload = QPushButton(Form)
-        self.btnUpload.setObjectName(u"btnUpload")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.btnUpload.sizePolicy().hasHeightForWidth())
-        self.btnUpload.setSizePolicy(sizePolicy1)
-        self.btnUpload.setMaximumSize(QSize(30, 30))
-
-        self.inputDatLayout.addWidget(self.btnUpload, 0, Qt.AlignmentFlag.AlignLeft)
-
-        self.inputDatLayout.setStretch(0, 1)
-
-        self.verticalLayout.addLayout(self.inputDatLayout)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
-
-        self.verticalLayout.addItem(self.verticalSpacer_2)
-
         self.heightLayout = QHBoxLayout()
         self.heightLayout.setSpacing(15)
         self.heightLayout.setObjectName(u"heightLayout")
         self.label_3 = QLabel(Form)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy1)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy)
 
         self.heightLayout.addWidget(self.label_3)
 
@@ -89,8 +58,8 @@ class Ui_Form(object):
         self.widthLayout.setObjectName(u"widthLayout")
         self.label_2 = QLabel(Form)
         self.label_2.setObjectName(u"label_2")
-        sizePolicy1.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
 
         self.widthLayout.addWidget(self.label_2)
 
@@ -115,11 +84,11 @@ class Ui_Form(object):
         self.comboRotation.addItem("")
         self.comboRotation.addItem("")
         self.comboRotation.setObjectName(u"comboRotation")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.comboRotation.sizePolicy().hasHeightForWidth())
-        self.comboRotation.setSizePolicy(sizePolicy2)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.comboRotation.sizePolicy().hasHeightForWidth())
+        self.comboRotation.setSizePolicy(sizePolicy1)
 
         self.rotLayout.addWidget(self.comboRotation, 0, Qt.AlignmentFlag.AlignLeft)
 
@@ -150,23 +119,50 @@ class Ui_Form(object):
 
         self.verticalLayout.addLayout(self.dtypeLayout)
 
-        self.verticalSpacer_3 = QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        self.inputDatLayout = QHBoxLayout()
+        self.inputDatLayout.setSpacing(0)
+        self.inputDatLayout.setObjectName(u"inputDatLayout")
+        self.editInput = QLineEdit(Form)
+        self.editInput.setObjectName(u"editInput")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.editInput.sizePolicy().hasHeightForWidth())
+        self.editInput.setSizePolicy(sizePolicy2)
+        self.editInput.setMaximumSize(QSize(16777215, 16777215))
+        self.editInput.setReadOnly(True)
 
-        self.verticalLayout.addItem(self.verticalSpacer_3)
+        self.inputDatLayout.addWidget(self.editInput)
+
+        self.btnUpload = QPushButton(Form)
+        self.btnUpload.setObjectName(u"btnUpload")
+        sizePolicy.setHeightForWidth(self.btnUpload.sizePolicy().hasHeightForWidth())
+        self.btnUpload.setSizePolicy(sizePolicy)
+        self.btnUpload.setMaximumSize(QSize(30, 30))
+
+        self.inputDatLayout.addWidget(self.btnUpload, 0, Qt.AlignmentFlag.AlignLeft)
+
+        self.inputDatLayout.setStretch(0, 1)
+
+        self.verticalLayout.addLayout(self.inputDatLayout)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+
+        self.verticalLayout.addItem(self.verticalSpacer_2)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.comboModels = QComboBox(Form)
         self.comboModels.setObjectName(u"comboModels")
-        sizePolicy2.setHeightForWidth(self.comboModels.sizePolicy().hasHeightForWidth())
-        self.comboModels.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.comboModels.sizePolicy().hasHeightForWidth())
+        self.comboModels.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_2.addWidget(self.comboModels, 0, Qt.AlignmentFlag.AlignLeft)
 
         self.btnProcess = QPushButton(Form)
         self.btnProcess.setObjectName(u"btnProcess")
-        sizePolicy.setHeightForWidth(self.btnProcess.sizePolicy().hasHeightForWidth())
-        self.btnProcess.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.btnProcess.sizePolicy().hasHeightForWidth())
+        self.btnProcess.setSizePolicy(sizePolicy2)
         self.btnProcess.setMaximumSize(QSize(100, 16777215))
         self.btnProcess.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
 
@@ -176,7 +172,7 @@ class Ui_Form(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
-        self.verticalSpacer_4 = QSpacerItem(20, 12, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        self.verticalSpacer_4 = QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
 
         self.verticalLayout.addItem(self.verticalSpacer_4)
 
@@ -192,8 +188,8 @@ class Ui_Form(object):
 
         self.btnDownload = QPushButton(Form)
         self.btnDownload.setObjectName(u"btnDownload")
-        sizePolicy.setHeightForWidth(self.btnDownload.sizePolicy().hasHeightForWidth())
-        self.btnDownload.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.btnDownload.sizePolicy().hasHeightForWidth())
+        self.btnDownload.setSizePolicy(sizePolicy2)
         self.btnDownload.setMaximumSize(QSize(100, 16777215))
 
         self.horizontalLayout_3.addWidget(self.btnDownload, 0, Qt.AlignmentFlag.AlignLeft)
@@ -236,8 +232,8 @@ class Ui_Form(object):
         self.checkShowMask = QCheckBox(Form)
         self.checkShowMask.setObjectName(u"checkShowMask")
         self.checkShowMask.setEnabled(True)
-        sizePolicy.setHeightForWidth(self.checkShowMask.sizePolicy().hasHeightForWidth())
-        self.checkShowMask.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.checkShowMask.sizePolicy().hasHeightForWidth())
+        self.checkShowMask.setSizePolicy(sizePolicy2)
         self.checkShowMask.setMinimumSize(QSize(0, 0))
         self.checkShowMask.setSizeIncrement(QSize(0, 0))
         self.checkShowMask.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
@@ -246,9 +242,9 @@ class Ui_Form(object):
 
         self.imagesSettingsLayout.addWidget(self.checkShowMask, 0, Qt.AlignmentFlag.AlignRight)
 
-        self.imagesLayout = QHBoxLayout()
-        self.imagesLayout.setSpacing(10)
-        self.imagesLayout.setObjectName(u"imagesLayout")
+        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setSpacing(10)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.labelInputImage = QLabel(Form)
         self.labelInputImage.setObjectName(u"labelInputImage")
         sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -259,7 +255,7 @@ class Ui_Form(object):
         self.labelInputImage.setMinimumSize(QSize(1, 1))
         self.labelInputImage.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.imagesLayout.addWidget(self.labelInputImage)
+        self.verticalLayout_3.addWidget(self.labelInputImage)
 
         self.labelMaskImage = QLabel(Form)
         self.labelMaskImage.setObjectName(u"labelMaskImage")
@@ -268,12 +264,12 @@ class Ui_Form(object):
         self.labelMaskImage.setMinimumSize(QSize(1, 1))
         self.labelMaskImage.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.imagesLayout.addWidget(self.labelMaskImage)
+        self.verticalLayout_3.addWidget(self.labelMaskImage)
 
-        self.imagesLayout.setStretch(0, 1)
-        self.imagesLayout.setStretch(1, 1)
+        self.verticalLayout_3.setStretch(0, 1)
+        self.verticalLayout_3.setStretch(1, 1)
 
-        self.imagesSettingsLayout.addLayout(self.imagesLayout)
+        self.imagesSettingsLayout.addLayout(self.verticalLayout_3)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -286,16 +282,16 @@ class Ui_Form(object):
         self.opacityLayout.setObjectName(u"opacityLayout")
         self.label = QLabel(Form)
         self.label.setObjectName(u"label")
-        sizePolicy2.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy1)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.opacityLayout.addWidget(self.label, 0, Qt.AlignmentFlag.AlignHCenter)
 
         self.sliderOpacity = QSlider(Form)
         self.sliderOpacity.setObjectName(u"sliderOpacity")
-        sizePolicy.setHeightForWidth(self.sliderOpacity.sizePolicy().hasHeightForWidth())
-        self.sliderOpacity.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.sliderOpacity.sizePolicy().hasHeightForWidth())
+        self.sliderOpacity.setSizePolicy(sizePolicy2)
         self.sliderOpacity.setMinimumSize(QSize(150, 0))
         self.sliderOpacity.setMaximumSize(QSize(16777215, 16777215))
         self.sliderOpacity.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
@@ -331,8 +327,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"StratoSearch", None))
-        self.editInput.setText(QCoreApplication.translate("Form", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0444\u0430\u0439\u043b \u0434\u0430\u043d\u043d\u044b\u0445", None))
-        self.btnUpload.setText(QCoreApplication.translate("Form", u"...", None))
         self.label_3.setText(QCoreApplication.translate("Form", u"\u0412\u044b\u0441\u043e\u0442\u0430", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u0428\u0438\u0440\u0438\u043d\u0430", None))
         self.label_5.setText(QCoreApplication.translate("Form", u"\u041f\u043e\u0432\u043e\u0440\u043e\u0442 (\u0433\u0440\u0430\u0434\u0443\u0441\u044b)", None))
@@ -348,6 +342,8 @@ class Ui_Form(object):
         self.comboDtype.setItemText(4, QCoreApplication.translate("Form", u"int16", None))
         self.comboDtype.setItemText(5, QCoreApplication.translate("Form", u"int32", None))
 
+        self.editInput.setText(QCoreApplication.translate("Form", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0444\u0430\u0439\u043b \u0434\u0430\u043d\u043d\u044b\u0445", None))
+        self.btnUpload.setText(QCoreApplication.translate("Form", u"...", None))
         self.btnProcess.setText(QCoreApplication.translate("Form", u"Process", None))
         self.comboSaveFormat.setItemText(0, QCoreApplication.translate("Form", u"Image (*.png *.jpg *.jpeg)", None))
         self.comboSaveFormat.setItemText(1, QCoreApplication.translate("Form", u"Numpy (*.npy)", None))
