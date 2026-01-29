@@ -1,6 +1,12 @@
 *.ipynb
+*__pycache__/
+*.pyc
+
 build/
 dist/
+
 *.dat
 *.npy
 *.spec
+
+*.idea/
