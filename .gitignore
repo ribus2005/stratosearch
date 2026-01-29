@@ -1,1 +1,6 @@
 *.ipynb
+build/
+dist/
+*.dat
+*.npy
+*.spec

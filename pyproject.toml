@@ -1,0 +1,27 @@
+[project]
+name = "stratosearch"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Vladislav Polyanskii",email = "v.polyanskii@g.nsu.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.13, <3.14"
+dependencies = [
+    "PySide6>=6.10.0",
+    "numpy>=2.4.0",
+    "matplotlib>=3.10.0",
+    "onnxruntime>=1.23.0"
+]
+
+[tool.poetry]
+packages = [
+    { include = "stratosearch" }
+]
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
