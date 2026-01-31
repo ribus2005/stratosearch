@@ -14,4 +14,5 @@ def default_postprocess(output: torch.Tensor) -> np.ndarray:
 
 
 POSTPROCESSORS = {
+    "DINO": default_postprocess,
 }
