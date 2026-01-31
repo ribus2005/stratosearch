@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>881</width>
-    <height>501</height>
+    <width>929</width>
+    <height>637</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -410,46 +410,40 @@
         <number>10</number>
        </property>
        <item>
-        <widget class="QLabel" name="labelInputImage">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QGraphicsView" name="graphicsView">
          <property name="minimumSize">
           <size>
            <width>1</width>
            <height>1</height>
           </size>
          </property>
-         <property name="text">
-          <string>InputImage</string>
+         <property name="dragMode">
+          <enum>QGraphicsView::DragMode::ScrollHandDrag</enum>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignmentFlag::AlignCenter</set>
+         <property name="transformationAnchor">
+          <enum>QGraphicsView::ViewportAnchor::AnchorUnderMouse</enum>
+         </property>
+         <property name="resizeAnchor">
+          <enum>QGraphicsView::ViewportAnchor::AnchorUnderMouse</enum>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="labelMaskImage">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QGraphicsView" name="graphicsViewMask">
          <property name="minimumSize">
           <size>
            <width>1</width>
            <height>1</height>
           </size>
          </property>
-         <property name="text">
-          <string>MaskImage</string>
+         <property name="dragMode">
+          <enum>QGraphicsView::DragMode::ScrollHandDrag</enum>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignmentFlag::AlignCenter</set>
+         <property name="transformationAnchor">
+          <enum>QGraphicsView::ViewportAnchor::AnchorUnderMouse</enum>
+         </property>
+         <property name="resizeAnchor">
+          <enum>QGraphicsView::ViewportAnchor::AnchorUnderMouse</enum>
          </property>
         </widget>
        </item>

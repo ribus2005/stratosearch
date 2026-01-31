@@ -15,16 +15,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QHBoxLayout,
-    QLabel, QLayout, QLineEdit, QPushButton,
-    QSizePolicy, QSlider, QSpacerItem, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGraphicsView,
+    QHBoxLayout, QLabel, QLayout, QLineEdit,
+    QPushButton, QSizePolicy, QSlider, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(881, 501)
+        Form.resize(929, 637)
         self.horizontalLayout_4 = QHBoxLayout(Form)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.verticalLayout_2 = QVBoxLayout()
@@ -245,26 +245,23 @@ class Ui_Form(object):
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setSpacing(10)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.labelInputImage = QLabel(Form)
-        self.labelInputImage.setObjectName(u"labelInputImage")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.labelInputImage.sizePolicy().hasHeightForWidth())
-        self.labelInputImage.setSizePolicy(sizePolicy3)
-        self.labelInputImage.setMinimumSize(QSize(1, 1))
-        self.labelInputImage.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.graphicsView = QGraphicsView(Form)
+        self.graphicsView.setObjectName(u"graphicsView")
+        self.graphicsView.setMinimumSize(QSize(1, 1))
+        self.graphicsView.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+        self.graphicsView.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+        self.graphicsView.setResizeAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
 
-        self.verticalLayout_3.addWidget(self.labelInputImage)
+        self.verticalLayout_3.addWidget(self.graphicsView)
 
-        self.labelMaskImage = QLabel(Form)
-        self.labelMaskImage.setObjectName(u"labelMaskImage")
-        sizePolicy3.setHeightForWidth(self.labelMaskImage.sizePolicy().hasHeightForWidth())
-        self.labelMaskImage.setSizePolicy(sizePolicy3)
-        self.labelMaskImage.setMinimumSize(QSize(1, 1))
-        self.labelMaskImage.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.graphicsViewMask = QGraphicsView(Form)
+        self.graphicsViewMask.setObjectName(u"graphicsViewMask")
+        self.graphicsViewMask.setMinimumSize(QSize(1, 1))
+        self.graphicsViewMask.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+        self.graphicsViewMask.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+        self.graphicsViewMask.setResizeAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
 
-        self.verticalLayout_3.addWidget(self.labelMaskImage)
+        self.verticalLayout_3.addWidget(self.graphicsViewMask)
 
         self.verticalLayout_3.setStretch(0, 1)
         self.verticalLayout_3.setStretch(1, 1)
@@ -351,8 +348,6 @@ class Ui_Form(object):
 
         self.btnDownload.setText(QCoreApplication.translate("Form", u"Download", None))
         self.checkShowMask.setText(QCoreApplication.translate("Form", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0442\u044c \u041c\u0430\u0441\u043a\u0443", None))
-        self.labelInputImage.setText(QCoreApplication.translate("Form", u"InputImage", None))
-        self.labelMaskImage.setText(QCoreApplication.translate("Form", u"MaskImage", None))
         self.label.setText(QCoreApplication.translate("Form", u"\u041f\u0440\u043e\u0437\u0440\u0430\u0447\u043d\u043e\u0441\u0442\u044c \u043c\u0430\u0441\u043a\u0438", None))
     # retranslateUi
 

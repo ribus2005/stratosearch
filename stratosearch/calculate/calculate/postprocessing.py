@@ -17,7 +17,7 @@ def default_postprocess(output: torch.Tensor) -> np.ndarray:
 def DPT_postprocess(output: torch.Tensor, shape = (701, 255)) -> np.ndarray:
     pred = output.predicted_depth.argmax(dim=1).squeeze()
 
-    pred_np = pred.detach().cpu().numpy() 
+    pred_np = pred.detach().cpu().numpy()
 
     resized = cv2.resize(pred_np, shape, interpolation=cv2.INTER_NEAREST)
 
