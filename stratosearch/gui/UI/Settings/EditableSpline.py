@@ -29,9 +29,14 @@ class EditableSpline:
         scene.addItem(self.fill_item)
 
         # --- контур ---
+        self.path_item_under = QGraphicsPathItem()
+        self.path_item_under.setPen(QPen(QColor("black"), 4))
+        self.path_item_under.setZValue(3)
+        scene.addItem(self.path_item_under)
+
         self.path_item = QGraphicsPathItem()
-        self.path_item.setPen(QPen(QColor("red"), 2))
-        self.path_item.setZValue(3)
+        self.path_item.setPen(QPen(QColor("yellow"), 2))
+        self.path_item.setZValue(4)
         scene.addItem(self.path_item)
 
         # --- контрольные точки ---
@@ -76,12 +81,14 @@ class EditableSpline:
 
         clipped_path = smooth_path.intersected(self.bounding_rect_path)
 
-        self.path_item.setPath(clipped_path)  # красивая граница
-        self.fill_item.setPath(clipped_path)  # заливка строго по маске
+        self.path_item_under.setPath(clipped_path)
+        self.path_item.setPath(clipped_path)
+        self.fill_item.setPath(clipped_path)
 
     def remove(self):
         for h in self.handles:
             self.scene.removeItem(h)
+        self.scene.removeItem(self.path_item_under)
         self.scene.removeItem(self.path_item)
         self.scene.removeItem(self.fill_item)
 
@@ -94,7 +101,7 @@ class SplineHandle(QGraphicsEllipseItem):
         self.setPos(x, y)
         self.setBrush(QColor("yellow"))
         self.setPen(QPen(Qt.black, 3))
-        self.setZValue(3)
+        self.setZValue(4)
 
         self.setFlags(
             QGraphicsItem.ItemIsMovable |

@@ -1,9 +1,7 @@
-from .unet import UNet
+from .unet import UNet, UNET_FEATURES
 
-MODELS = {
-    "unet": UNet,
-}
 
 __all__ = [
-    "MODELS"
+    "UNet",
+    "UNET_FEATURES"
 ]

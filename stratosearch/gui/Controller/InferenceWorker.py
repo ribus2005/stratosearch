@@ -5,6 +5,7 @@ from PySide6.QtCore import QObject, Signal, Slot
 
 from stratosearch.calculate.calculate import POSTPROCESSORS, default_postprocess
 from stratosearch.calculate.calculate import PREPROCESSORS, default_preprocess
+from stratosearch.calculate.models import UNet, UNET_FEATURES
 
 
 class InferenceWorker(QObject):
@@ -16,8 +17,15 @@ class InferenceWorker(QObject):
         self.input_array = input_array
         self.model_name = model_name
         self.class_palette = class_palette
+        self.model = None
 
-        self.model = torch.load(weight_path, map_location=torch.device('cpu'), weights_only=False)
+        if model_name == "UNet":
+            ckpt = torch.load(weight_path, map_location=torch.device('cpu'))
+            self.model = UNet(in_ch=2, out_ch=6, features=UNET_FEATURES)
+            self.model.load_state_dict(ckpt["model_state"])
+        elif model_name == "DPT":
+            self.model = torch.load(weight_path, map_location=torch.device('cpu'), weights_only=False)
+
         self.model.eval()
 
         self.mask_array = None

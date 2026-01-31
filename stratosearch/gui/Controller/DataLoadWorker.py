@@ -7,22 +7,18 @@ class DataLoadWorker(QObject):
     finished = Signal(object, object)  # input_array, rgb_image
     error = Signal(str)
 
-    def __init__(self, file_path, width, height, dtype, rotation):
+    def __init__(self, file_path, width, height, dtype):
         super().__init__()
         self.file_path = file_path
         self.width = width
         self.height = height
         self.dtype = dtype
-        self.rotation = rotation
 
     @Slot()
     def run(self):
         try:
             data = np.fromfile(self.file_path, dtype=self.dtype)
             data = data.reshape((self.height, self.width), order="F")
-
-            k = self.rotation // 90
-            data = np.rot90(data, k)
 
             rgb = self.apply_seismic_colormap(data)
 

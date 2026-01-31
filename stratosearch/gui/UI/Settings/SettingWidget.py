@@ -1,9 +1,6 @@
-import sys
-from pathlib import Path
-
 import numpy as np
-import matplotlib.cm as cm
-from PySide6.QtGui import QImage, QPixmap, QColor
+from matplotlib.colors import to_rgb
+from PySide6.QtGui import QImage, QPixmap, QColor, QPainter
 from PySide6.QtWidgets import (
     QWidget, QFileDialog, QMessageBox,
     QGraphicsScene, QGraphicsPixmapItem, QGraphicsView,
@@ -26,7 +23,6 @@ class ClickableGraphicsView(QGraphicsView):
         pos = self.mapToScene(event.pos())
         item = self.scene().itemAt(pos, self.transform())
 
-        # Если клик по интерактивным элементам сплайна — НЕ строим новый
         if isinstance(item, (SplineHandle, QGraphicsPathItem)):
             super().mousePressEvent(event)
             return
@@ -36,14 +32,26 @@ class ClickableGraphicsView(QGraphicsView):
 
 
 class SettingWidget(QWidget):
-    def __init__(self):
+    def __init__(self, app_dir):
         super().__init__()
 
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
         # Цвета
-        self.class_colors = self.generate_class_colors(6)
+        self.class_colors_codes = [
+            '#000066',  # тёмно-синий   → 0
+            '#0000cc',  # синий         → 1
+            '#4444ff',  # светло-синий  → 2
+            '#ff4444',  # светло-красный→ 3
+            '#cc0000',  # красный       → 4
+            '#660000'  # тёмно-красный → 5
+        ]
+
+        self.class_colors = []
+        for color_code in self.class_colors_codes:
+            r, g, b = to_rgb(color_code)  # получаем float 0–1
+            self.class_colors.append(QColor(int(r * 255), int(g * 255), int(b * 255)))
         self.class_palette = np.array([(c.red(), c.green(), c.blue()) for c in self.class_colors], dtype=np.uint8)
 
         # Сцена для основного изображения
@@ -74,7 +82,7 @@ class SettingWidget(QWidget):
         self.spline_building = False
 
         # Загружаем список моделей
-        self.weights_dir = self.get_app_dir() / "weights"
+        self.weights_dir = app_dir / "weights"
         self.ensure_weights_dir()
 
         self.models_info = {}  # display_name → (weight_path, model_name)
@@ -89,30 +97,21 @@ class SettingWidget(QWidget):
         self.ui.btnProcess.clicked.connect(self.process_image)
         self.ui.btnDownload.clicked.connect(self.download_image)
 
+        # Дефолтные значения размеров
+        self.ui.editWidth.setText("701")
+        self.ui.editHeight.setText("255")
+
+        # Тип данных для загрузки из .dat
+        self.dat_dtype = np.float32
+
         # Интерактив с маской
         self.ui.sliderOpacity.valueChanged.connect(self.update_mask_display)
         self.ui.checkShowMask.stateChanged.connect(self.update_mask_display)
 
         self.original_pixmap = None
         self.mask_pixmap = None
-        self.result_pixmap = None
         self.mask_array = None
         self.input_array = None
-
-    @staticmethod
-    def generate_class_colors(n):
-        cmap = cm.get_cmap("viridis")
-        colors = []
-        for i in range(n):
-            r, g, b, _ = cmap(i / max(1, n - 1))
-            colors.append(QColor(int(r * 255), int(g * 255), int(b * 255)))
-        return colors
-
-    @staticmethod
-    def get_app_dir():
-        if getattr(sys, 'frozen', False):
-            return Path(sys.executable).resolve().parent / "_internal"
-        return Path(__file__).resolve().parents[2]
 
     def ensure_weights_dir(self):
         """
@@ -132,7 +131,10 @@ class SettingWidget(QWidget):
         self.ui.comboModels.clear()
         self.models_info.clear()
 
-        model_files = list(self.weights_dir.glob("*.pth"))
+        model_files = [
+            f for f in self.weights_dir.iterdir()
+            if f.suffix.lower() in {".pth", ".pt"}
+        ]
 
         if not model_files:
             self.ui.comboModels.addItem("Нет доступных моделей")
@@ -142,15 +144,9 @@ class SettingWidget(QWidget):
         self.ui.comboModels.setEnabled(True)
 
         for file in model_files:
-            name = file.stem
-            if "_" not in name:
-                continue
-
-            model_name, version = name.rsplit("_", 1)
-            display = f"{model_name} ({version})"
-
-            self.models_info[display] = (str(file), model_name)
-            self.ui.comboModels.addItem(display)
+            model_name = file.stem
+            self.models_info[model_name] = (str(file), model_name)
+            self.ui.comboModels.addItem(model_name)
 
     # ---------------- ЗАГРУЗКА ИЗОБРАЖЕНИЯ ----------------
     def upload_image(self):
@@ -165,61 +161,61 @@ class SettingWidget(QWidget):
         try:
             width = int(self.ui.editWidth.text())
             height = int(self.ui.editHeight.text())
-            dtype_str = self.ui.comboDtype.currentText()
-            rotation = int(self.ui.comboRotation.currentText())
         except ValueError:
             QMessageBox.warning(self, "Ошибка", "Введите корректные Width и Height")
-            return
-
-        dtype_map = {
-            "float32": np.float32,
-            "float64": np.float64,
-            "uint8": np.uint8,
-            "uint16": np.uint16,
-            "int16": np.int16,
-            "int32": np.int32,
-        }
-
-        dtype = dtype_map.get(dtype_str)
-        if dtype is None:
-            QMessageBox.warning(self, "Ошибка", "Неподдерживаемый тип данных")
             return
 
         self.ui.editInput.setText(file_path)
 
         self.thread = QThread()
-        self.worker = DataLoadWorker(file_path, width, height, dtype, rotation)
+        self.worker = DataLoadWorker(file_path, width, height, self.dat_dtype)
         self.worker.moveToThread(self.thread)
 
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.on_data_loaded)
-        self.worker.error.connect(self.show_error)
 
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
 
+        self.worker.error.connect(self.show_error)
+        self.worker.error.connect(self.thread.quit)
+        self.worker.error.connect(self.worker.deleteLater)
+
         self.thread.start()
 
     def on_data_loaded(self, input_array, rgb_img):
+        # --- Новые входные данные ---
         self.input_array = input_array
         self.original_pixmap = self.numpy_to_pixmap(rgb_img)
 
+        # --- ПОЛНЫЙ СБРОС СТАРОЙ МАСКИ ---
+        self.mask_array = None
         self.mask_pixmap = None
-        self.result_pixmap = None
 
-        # Показываем изображение на сцене
+        # Убираем маску со сцен
+        self.mask_item_main.setPixmap(QPixmap())
+        self.mask_item_main.hide()
+
+        self.mask_item_preview.setPixmap(QPixmap())
+        self.mask_item_preview.hide()
+
+        # --- УДАЛЕНИЕ СТАРОГО СПЛАЙНА ---
+        if self.current_spline:
+            self.current_spline.remove()
+            self.current_spline = None
+
+        self.spline_building = False
+
+        # --- УСТАНОВКА НОВОГО ИЗОБРАЖЕНИЯ ---
         self.original_image_item.setPixmap(self.original_pixmap)
 
         self.image_scene_rect = self.original_image_item.mapToScene(
             self.original_image_item.boundingRect()
         ).boundingRect()
 
-        # Подгоняем сцену под размер изображения
         self.scene_main.setSceneRect(self.original_image_item.boundingRect())
         self.ui.graphicsView.fitInView(self.original_image_item, Qt.KeepAspectRatio)
-
-        self.ui.checkShowMask.setChecked(False)
 
     # ---------------- СЕГМЕНТАЦИЯ ----------------
     def process_image(self):
@@ -240,11 +236,14 @@ class SettingWidget(QWidget):
 
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.on_inference_done)
-        self.worker.error.connect(self.show_error)
 
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
+
+        self.worker.error.connect(self.show_error)
+        self.worker.error.connect(self.thread.quit)
+        self.worker.error.connect(self.worker.deleteLater)
 
         self.thread.start()
 
@@ -267,12 +266,10 @@ class SettingWidget(QWidget):
         visible = self.ui.checkShowMask.isChecked()
         opacity = self.ui.sliderOpacity.value() / 100.0
 
-        # --- Основное окно (маска поверх изображения) ---
         self.mask_item_main.setPixmap(self.mask_pixmap)
         self.mask_item_main.setOpacity(opacity)
         self.mask_item_main.setVisible(True)
 
-        # --- Окно с отдельной маской ---
         self.mask_item_preview.setPixmap(self.mask_pixmap)
         self.mask_item_preview.setVisible(visible)
 
@@ -305,11 +302,14 @@ class SettingWidget(QWidget):
 
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.on_splines_done)
-        self.worker.error.connect(self.show_error)
 
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
+
+        self.worker.error.connect(self.show_error)
+        self.worker.error.connect(self.thread.quit)
+        self.worker.error.connect(self.worker.deleteLater)
 
         self.thread.start()
 
@@ -331,8 +331,26 @@ class SettingWidget(QWidget):
                                              self.image_scene_rect)
 
     # ---------------- СОХРАНЕНИЕ ----------------
+    def compose_result_pixmap(self):
+        if self.original_pixmap is None:
+            return None
+
+        result = QPixmap(self.original_pixmap.size())
+        result.fill(Qt.transparent)
+
+        painter = QPainter(result)
+        painter.drawPixmap(0, 0, self.original_pixmap)
+
+        if self.mask_pixmap:
+            opacity = self.ui.sliderOpacity.value() / 100.0
+            painter.setOpacity(opacity)
+            painter.drawPixmap(0, 0, self.mask_pixmap)
+
+        painter.end()
+        return result
+
     def download_image(self):
-        if self.result_pixmap is None and self.mask_array is None:
+        if self.mask_array is None:
             QMessageBox.warning(self, "Ошибка", "Нет результата для сохранения")
             return
 
@@ -352,18 +370,24 @@ class SettingWidget(QWidget):
         if not file_path:
             return
 
-        pixmap_to_save = self.result_pixmap or self.original_pixmap
+        if format_text.startswith("Image"):
+            pixmap_to_save = self.compose_result_pixmap()
+        else:
+            pixmap_to_save = None
 
         self.thread = QThread()
         self.worker = ExportWorker(file_path, format_text, pixmap_to_save, self.mask_array)
         self.worker.moveToThread(self.thread)
 
         self.thread.started.connect(self.worker.run)
-        self.worker.error.connect(self.show_error)
 
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
+
+        self.worker.error.connect(self.show_error)
+        self.worker.error.connect(self.thread.quit)
+        self.worker.error.connect(self.worker.deleteLater)
 
         self.thread.start()
 
@@ -376,9 +400,9 @@ class SettingWidget(QWidget):
         """
         Конвертирует numpy-массив (H×W или H×W×3) в QPixmap без сохранения на диск
         """
-        arr = np.ascontiguousarray(arr, dtype=np.uint8)  # гарантируем непрерывную память
+        arr = np.ascontiguousarray(arr, dtype=np.uint8)
 
-        if arr.ndim == 2:  # Grayscale
+        if arr.ndim == 2:
             h, w = arr.shape
             qimg = QImage(arr.data, w, h, w, QImage.Format_Grayscale8).copy()
         elif arr.ndim == 3 and arr.shape[2] == 3:  # RGB
@@ -387,4 +411,4 @@ class SettingWidget(QWidget):
         else:
             raise ValueError("Неподдерживаемая форма массива для изображения")
 
-        return QPixmap.fromImage(qimg)
+        return QPixmap.fromImage(qimg.copy())

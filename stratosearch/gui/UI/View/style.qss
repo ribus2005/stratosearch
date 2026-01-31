@@ -1,0 +1,129 @@
+/* === ОБЩЕЕ ОКНО === */
+QWidget {
+    background-color: #F4F7FB;
+    color: #1E2A38;
+    font-family: "Segoe UI", "Inter", sans-serif;
+    font-size: 13px;
+}
+
+/* === ЛЕВАЯ ПАНЕЛЬ КОНТРОЛОВ (как карточка) === */
+QWidget#Form > QVBoxLayout > QWidget {
+    background: #FFFFFF;
+    border-radius: 12px;
+}
+
+/* === LABEL === */
+QLabel {
+    color: #5C6B7A;
+    font-weight: 500;
+}
+
+/* Заголовки секций можно выделить */
+QLabel[title="true"] {
+    color: #1E2A38;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* === ПОЛЯ ВВОДА === */
+QLineEdit, QComboBox {
+    background: #FFFFFF;
+    border: 1px solid #D6DFEA;
+    border-radius: 8px;
+    padding: 6px 8px;
+    selection-background-color: #4FA3FF;
+}
+
+QLineEdit:focus, QComboBox:focus {
+    border: 1px solid #4FA3FF;
+}
+
+/* READONLY поле выбора файла */
+QLineEdit[readOnly="true"] {
+    background: #EEF3F9;
+    color: #5C6B7A;
+}
+
+/* === КНОПКИ ОСНОВНЫЕ === */
+QPushButton {
+    background-color: #1F6FEB;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 600;
+}
+
+QPushButton:hover {
+    background-color: #4FA3FF;
+}
+
+QPushButton:pressed {
+    background-color: #1559C0;
+}
+
+/* Маленькая кнопка загрузки "..." */
+QPushButton#btnUpload {
+    background-color: #E6EEF8;
+    color: #1F6FEB;
+    border-radius: 8px;
+    font-weight: bold;
+}
+QPushButton#btnUpload:hover {
+    background-color: #D6E4F5;
+}
+
+/* === ВТОРИЧНЫЕ КНОПКИ (Download) === */
+QPushButton#btnDownload {
+    background-color: #E6EEF8;
+    color: #1F6FEB;
+}
+QPushButton#btnDownload:hover {
+    background-color: #D6E4F5;
+}
+
+/* === CHECKBOX === */
+QCheckBox {
+    spacing: 6px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid #D6DFEA;
+    background: white;
+}
+QCheckBox::indicator:checked {
+    background-color: #1F6FEB;
+    border: none;
+}
+
+/* === SLIDER (маска = акцент голубой) === */
+QSlider::groove:horizontal {
+    height: 6px;
+    background: #D6DFEA;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    background: #4FA3FF;
+    width: 16px;
+    margin: -6px 0;
+    border-radius: 8px;
+}
+
+QSlider::sub-page:horizontal {
+    background: #4FA3FF;
+    border-radius: 3px;
+}
+
+/* === ОБЛАСТЬ ИЗОБРАЖЕНИЙ === */
+QGraphicsView {
+    background-color: transparent;
+    border: 1px solid #D6DFEA;
+    border-radius: 12px;
+}
+
+QGraphicsView#graphicsViewMask {
+    background-color: transparent;
+}

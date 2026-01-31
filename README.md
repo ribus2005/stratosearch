@@ -34,35 +34,19 @@ poetry install
 
 ### Сборка с pyinstaller
 
-Есть два варианта сборки:
-* Onefile - на выходе получаем .exe файл и папку с весами,  
-  откуда приложение подгружает модели. 
-* Onedir - на выходе получаем .exe файл и папку _internal  
-  со всеми необходимыми внешними пакетами и файлами.
-
-#### Onefile
-
-Для сборки onefile есть python скрипт, можно использовать его,  
-тогда .exe файл и папка с весами сразу добавятся в выбранную папку назначения.
+Для сборки приложения используйте build.py,  
+который лежит в корневой директории проекта.
 
 ```powershell
-python build.py <OUTPUT_DIR>
+python build.py <OUTPUT_DIR> --type <TYPE>
 ```
 
-Или обычный способ, но тогда папку с весами нужно будет скопировать руками.
-
-```powershell
- poetry run pyinstaller --noconfirm --windowed --onefile --collect-all PySide6 --name stratosearch stratosearch/gui/main.py
-```
-
-#### Onedir
-
-При таком варианте сборке веса лежат в папке _internal  
-и ничего руками перетаскивать не нужно.
-
-```powershell
- poetry run pyinstaller --noconfirm --windowed --onedir --collect-all PySide6 --name stratosearch --add-data "weights/*;weights" stratosearch/gui/main.py
-```
-
-После сборки приложение будет доступно в папке dist/.  
-А результаты сборки будут в build/.
+* TYPE - это тип сборки в pyinstaller.  
+  Есть два варианта:  
+  * __Onefile__: На выходе исполняемый файл и небольшое кол-во файлов  
+    необходимых для работы приложения (веса, графика) 
+  * __Onedir__: Также исполняемый файл, необходимые для работы приложения файлы,  
+    а также папка _internal со всеми сторонними пакетами. Этот вариант можно  
+    спокойно переносить на другие устройства без пересборки.
+* OUTPUT_DIR - куда сохранить приложение. 
+* Результаты сборки будут в build/.
