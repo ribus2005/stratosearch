@@ -18,8 +18,10 @@ cd stratosearch
 
 #### Установка poetry
 
+Пример команды:
+
 ```powershell
-python -m pip insall poetry
+%LocalAppData%\Programs\Python\Python313\python.exe -m pip insall poetry
 ```
 
 #### Создание окружения и установка зависимостей
@@ -62,4 +64,5 @@ python build.py <OUTPUT_DIR>
  poetry run pyinstaller --noconfirm --windowed --onedir --collect-all PySide6 --name stratosearch --add-data "weights/*;weights" stratosearch/gui/main.py
 ```
 
-После сборки приложение будет доступно в папке dist/.
+После сборки приложение будет доступно в папке dist/.  
+А результаты сборки будут в build/.
