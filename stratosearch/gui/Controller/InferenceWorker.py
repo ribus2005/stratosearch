@@ -6,7 +6,6 @@ from PySide6.QtCore import QObject, Signal, Slot
 
 from stratosearch.calculate.calculate import POSTPROCESSORS, default_postprocess
 from stratosearch.calculate.calculate import PREPROCESSORS, default_preprocess
-from stratosearch.calculate.models import MODELS
 
 
 class InferenceWorker(QObject):
@@ -18,8 +17,7 @@ class InferenceWorker(QObject):
         self.input_array = input_array
         self.model_name = model_name
 
-        self.model = MODELS.get(model_name)()
-        self.model.load_state_dict(torch.load(weight_path, map_location='cpu'))
+        self.model = torch.load(weight_path, map_location=torch.device('cpu'), weights_only=False)
         self.model.eval()
 
         self.mask_array = None

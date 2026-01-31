@@ -50,7 +50,7 @@ class SettingWidget(QWidget):
     @staticmethod
     def get_app_dir():
         if getattr(sys, 'frozen', False):
-            return Path(sys.executable).resolve().parent
+            return Path(sys.executable).resolve().parent / "_internal"
         return Path(__file__).resolve().parents[2]
 
     def ensure_weights_dir(self):
